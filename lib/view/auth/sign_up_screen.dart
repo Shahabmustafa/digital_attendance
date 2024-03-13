@@ -1,8 +1,11 @@
+import 'package:digital_attendance/provider/loading_button_provider.dart';
+import 'package:digital_attendance/viewmodel/auth/auth_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:safi_shoes_admin/res/widget/app_button.dart';
-import 'package:safi_shoes_admin/res/widget/app_text_field.dart';
-import 'package:safi_shoes_admin/viewmodel/auth/auth_controller.dart';
+import 'package:provider/provider.dart';
+
+import '../../res/component/app_button.dart';
+import '../../res/component/app_text_field.dart';
+
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -13,7 +16,9 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
 
-  final signUp = Get.put(AuthenticationController());
+  final userName = TextEditingController();
+  final email = TextEditingController();
+  final password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +32,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Column(
                 children: [
                   AppTextField(
-                    controller: signUp.signUpEmail,
+                    labelText: "User Name",
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  AppTextField(
                     labelText: "Email",
                   ),
                   SizedBox(
                     height: 10,
                   ),
                   AppTextField(
-                    controller: signUp.signUpPassword,
                     labelText: "Password",
                   ),
                 ],
@@ -43,15 +52,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
             SizedBox(
               height: 20,
             ),
-            Obx((){
-              return AppButton(
-                title: "SIGNUP",
-                loading: signUp.loading,
-                onTap: (){
-                  signUp.isSignUp(context);
-                },
-              );
-            }),
+            Consumer<LoadingButtonProvider>(
+              builder: (context,value,chils){
+                return AppButton(
+                  title: "SIGNUP",
+                  loading: value.loading,
+                  onTap: (){
+                    // AuthenticationController().signUp(
+                    //   userName.text,
+                    //   email.text,
+                    //   password.text,
+                    // );
+                  },
+                );
+              },
+            ),
             SizedBox(
               height: 20,
             ),
